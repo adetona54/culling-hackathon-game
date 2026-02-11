@@ -398,6 +398,59 @@
             #leaderboard-screen {
                 padding: 30px 40px;
             }
+
+            .apple-guide {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mobile Controls */
+        #mobile-controls {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            user-select: none;
+        }
+
+        .control-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .touch-btn {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+            touch-action: manipulation;
+            transition: background 0.1s, transform 0.1s;
+        }
+
+        .touch-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.95);
+        }
+
+        @media (pointer: coarse) {
+            #mobile-controls {
+                display: flex;
+            }
+        }
+
+        /* Prevent scrolling on game area */
+        canvas,
+        #canvas-wrapper,
+        .touch-btn {
+            touch-action: none;
         }
     </style>
 </head>
@@ -471,6 +524,18 @@
                 <div id="level-complete">
                     <h3>🎉 Level Complete!</h3>
                     <p style="font-size: 1.2rem; margin: 15px 0;">Prepare for the next challenge...</p>
+                </div>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div id="mobile-controls">
+                <div class="control-row">
+                    <div class="touch-btn" id="btn-up">🔼</div>
+                </div>
+                <div class="control-row">
+                    <div class="touch-btn" id="btn-left">◀️</div>
+                    <div class="touch-btn" id="btn-down">🔽</div>
+                    <div class="touch-btn" id="btn-right">▶️</div>
                 </div>
             </div>
         </div>
@@ -1502,22 +1567,74 @@
 
             switch (e.key) {
                 case 'ArrowUp':
-                    if (direction.y !== 1) nextDirection = { x: 0, y: -1 };
+                    changeDirection(0, -1);
                     e.preventDefault();
                     break;
                 case 'ArrowDown':
-                    if (direction.y !== -1) nextDirection = { x: 0, y: 1 };
+                    changeDirection(0, 1);
                     e.preventDefault();
                     break;
                 case 'ArrowLeft':
-                    if (direction.x !== 1) nextDirection = { x: -1, y: 0 };
+                    changeDirection(-1, 0);
                     e.preventDefault();
                     break;
                 case 'ArrowRight':
-                    if (direction.x !== -1) nextDirection = { x: 1, y: 0 };
+                    changeDirection(1, 0);
                     e.preventDefault();
                     break;
             }
+        });
+
+        // Touch controls
+        function initTouchControls() {
+            const btns = {
+                'btn-up': { x: 0, y: -1 },
+                'btn-down': { x: 0, y: 1 },
+                'btn-left': { x: -1, y: 0 },
+                'btn-right': { x: 1, y: 0 }
+            };
+
+            Object.entries(btns).forEach(([id, dir]) => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.addEventListener('pointerdown', (e) => {
+                        e.preventDefault();
+                        changeDirection(dir.x, dir.y);
+                    });
+                }
+            });
+        }
+
+        function changeDirection(x, y) {
+            if (gameState !== 'playing') return;
+
+            // Prevent 180-degree turns
+            if (x !== 0 && direction.x === -x) return;
+            if (y !== 0 && direction.y === -y) return;
+
+            nextDirection = { x, y };
+        }
+
+        // Responsive Canvas Scaling
+        function resizeCanvas() {
+            const container = document.getElementById('canvas-wrapper');
+            const maxWidth = window.innerWidth - 40; // 20px padding on each side
+            const scale = Math.min(1, maxWidth / 620); // 600px canvas + 20px padding
+
+            if (container) {
+                container.style.transform = `scale(${scale})`;
+                container.style.transformOrigin = 'top center';
+
+                // Adjust margin to account for scaled height
+                const scaledHeight = 620 * scale;
+                container.style.marginBottom = `${(scaledHeight - 620)}px`;
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', () => {
+            initTouchControls();
+            resizeCanvas();
         });
     </script>
 </body>
