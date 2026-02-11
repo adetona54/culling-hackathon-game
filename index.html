@@ -90,6 +90,85 @@
             margin-top: 30px;
         }
 
+        /* Apple Guide styles */
+        .apple-guide {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .apple-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .apple-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .apple-icon.red {
+            background: radial-gradient(circle at 30% 30%, #e74c3c, #c0392b);
+            box-shadow: 0 0 10px #e74c3c;
+        }
+
+        .apple-icon.golden {
+            background: radial-gradient(circle at 30% 30%, #f1c40f, #f39c12);
+            box-shadow: 0 0 10px #f39c12;
+        }
+
+        .apple-icon.warp {
+            background: radial-gradient(circle at 30% 30%, #3498db, #2980b9);
+            box-shadow: 0 0 10px #3498db;
+        }
+
+        .apple-icon.shrink {
+            background: radial-gradient(circle at 30% 30%, #9b59b6, #8e44ad);
+            box-shadow: 0 0 10px #9b59b6;
+        }
+
+        .apple-icon::after {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 20%;
+            width: 20%;
+            height: 20%;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+
+        .apple-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .apple-info h4 .unlock-score {
+            font-size: 0.75rem;
+            color: #95a5a6;
+            font-weight: normal;
+        }
+
+        .apple-info p {
+            font-size: 0.85rem;
+            color: #bdc3c7;
+            margin: 0;
+            line-height: 1.4;
+        }
+
         .btn {
             padding: 16px 40px;
             font-size: 1.3rem;
@@ -333,10 +412,41 @@
             <div class="rules">
                 <h3>📋 How to Play</h3>
                 <p><strong>Controls:</strong> Use arrow keys to move. Eat food to grow. Avoid walls and yourself!</p>
-                <p><strong>🏆 Classic Mode:</strong> Complete 3 progressive levels with increasing obstacles and speed.
+                <p><strong>🏆 Classic Mode:</strong> Complete 3 progressive levels.
                 </p>
-                <p><strong>🌟 Adventure Mode:</strong> Survive endless obstacles that spawn and move dynamically.
-                    Difficulty increases gradually!</p>
+                <p><strong>🌟 Adventure Mode:</strong> Survive endless obstacles that spawn and move dynamically.</p>
+            </div>
+
+            <h3 style="color: #3498db; margin-top: 20px;">🍎 Apple Guide</h3>
+            <div class="apple-guide">
+                <div class="apple-item">
+                    <div class="apple-icon red"></div>
+                    <div class="apple-info">
+                        <h4>Red Apple</h4>
+                        <p>Basic food. +10 points & Grow.</p>
+                    </div>
+                </div>
+                <div class="apple-item">
+                    <div class="apple-icon golden"></div>
+                    <div class="apple-info">
+                        <h4>Golden Apple <span class="unlock-score">(20+ pts)</span></h4>
+                        <p>High value. +50 points!</p>
+                    </div>
+                </div>
+                <div class="apple-item">
+                    <div class="apple-icon warp"></div>
+                    <div class="apple-info">
+                        <h4>Warp Apple <span class="unlock-score">(40+ pts)</span></h4>
+                        <p>Teleport to safety. +30 pts.</p>
+                    </div>
+                </div>
+                <div class="apple-item">
+                    <div class="apple-icon shrink"></div>
+                    <div class="apple-info">
+                        <h4>Shrink Apple <span class="unlock-score">(60+ pts)</span></h4>
+                        <p>Shrinks tail. +100 pts.</p>
+                    </div>
+                </div>
             </div>
 
             <div class="button-group">
