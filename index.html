@@ -866,21 +866,21 @@
             deathAnimationActive = true;
             clearInterval(gameLoop);
 
-            // Phase 1: Freeze (300ms)
+            // Phase 1: Freeze (150ms - reduced from 300ms)
             setTimeout(() => {
-                // Phase 2: Head flash and shake (200ms)
+                // Phase 2: Head flash and shake (100ms - reduced from 200ms)
                 let flashCount = 0;
                 const flashInterval = setInterval(() => {
                     flashCount++;
-                    if (flashCount > 4) {
+                    if (flashCount > 2) {
                         clearInterval(flashInterval);
                         breakingSound();
                         createScatterSegments();
                     }
                 }, 50);
-            }, 300);
+            }, 150);
 
-            // Phase 3: Segment scatter animation
+            // Phase 3: Segment scatter animation (starts at 250ms instead of 500ms)
             setTimeout(() => {
                 const animationLoop = setInterval(() => {
                     if (!deathAnimationActive) {
@@ -890,13 +890,13 @@
                     updateDeathAnimation();
                     drawDeathAnimation();
                 }, 16);
-            }, 500);
+            }, 250);
 
-            // Phase 4: Show game over screen
+            // Phase 4: Show game over screen (1200ms instead of 2000ms)
             setTimeout(() => {
                 deathAnimationActive = false;
                 endGame(deathType);
-            }, 2000);
+            }, 1200);
         }
 
         function createScatterSegments() {
